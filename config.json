@@ -1,0 +1,8 @@
+{
+  "urls": [
+    "url1",
+    "url2..."
+  ],
+    "refresh_time": 30,
+    "edge_driver_path": "your_file_path\\msedgedriver.exe"
+}

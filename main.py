@@ -1,28 +1,30 @@
+import json
 from selenium import webdriver
 from selenium.webdriver.edge.service import Service
 import time
 import threading
 
 
-def refresh_page(url):
-    driver = webdriver.Edge(service=Service('chemin_vers_le_pilote/msedgedriver.exe'))
+def refresh_page(url, refresh_time):
+    driver = webdriver.Edge(service=Service(config['edge_driver_path']))
     driver.get(url)
 
     while True:
-        time.sleep(30)
+        time.sleep(refresh_time)
         driver.refresh()
 
 
 if __name__ == '__main__':
-    urls = [
-        'URL_1',
-        'URL_2',
-        # Ajoutez d'autres URL ici
-    ]
+    # Load configuration from file
+    with open(r'your_file_path\config.json', 'r') as f:
+        config = json.load(f)
+
+    urls = config['urls']
+    refresh_time = config['refresh_time']
 
     threads = []
     for url in urls:
-        t = threading.Thread(target=refresh_page, args=(url,))
+        t = threading.Thread(target=refresh_page, args=(url, refresh_time))
         threads.append(t)
         t.start()
 
