@@ -18,36 +18,32 @@ This is a Python script designed to automate the process of refreshing multiple 
 pip install selenium
 ```
 3. **Microsoft Edge WebDriver**: Download the correct version of Edge WebDriver based on your Microsoft Edge version from [here](https://developer.microsoft.com/en-us/microsoft-edge/tools/webdriver/). After download and extraction, replace `'chemin_vers_le_pilote/msedgedriver.exe'` in the script with your webdriver path.
-
+   
 ## Usage
 
-1. Open the script in your Python editor.
-2. Update the `urls` list with the URLs you wish to auto-refresh:
+1. Open the Python script in your Python editor.
+2. Update the `config.json` file with the URLs you wish to auto-refresh and the refresh time:
 
-```python
-urls = [
-    'URL_1',
-    'URL_2',
-    # Add more URLs here
-]
+```json
+{
+    "urls": [
+        "URL_1",
+        "URL_2"
+        // Add more URLs here
+    ],
+    "edge_driver_path": "Your_Edge_Driver_Path",
+    "refresh_time": 30
+}
 ```
 
-3. Execute the script. Each URL opens in a new Microsoft Edge window and refreshes every 30 seconds.
+3. Execute the script. Each URL will open in a new Microsoft Edge window and refresh based on the configured interval.
 
 ## Customization
 
-To adjust the refresh interval, modify the sleep value in the `refresh_page` function. This value is in seconds:
-
-```python
-time.sleep(30)  # Change this to the number of seconds you want to wait between refreshes
-```
-
-## Disclaimer
-
-Respect the terms of service for each website. Do not refresh a page at an interval that might be considered abusive.
+To adjust the refresh interval, modify the `refresh_time` value in the `config.json` file. This value is in seconds.
 
 ## Limitations
 
-This script is specific to Microsoft Edge. For other browsers, different WebDriver is required and the script might need adjustments.
+This script is specific to Microsoft Edge. For other browsers, you will need a different WebDriver and may need to adjust the script.
 
-Please replace the placeholders like `'URL_1'`, `'URL_2'` and `'chemin_vers_le_pilote/msedgedriver.exe'` with the actual values.
+Remember to replace the placeholders such as `URL_1`, `URL_2`, and `Your_Edge_Driver_Path` with the actual values.
