@@ -4,11 +4,9 @@ from selenium import webdriver
 from selenium.webdriver.edge.service import Service as EdgeService
 from webdriver_manager.microsoft import EdgeChromiumDriverManager
 from selenium.webdriver.edge.options import Options as EdgeOptions
-from selenium.common.exceptions import SessionNotCreatedException
 from selenium.common.exceptions import WebDriverException
 import logging
 
-# Configuration de base du logging
 logging.basicConfig(level=logging.INFO)
 
 drivers = []
@@ -27,13 +25,13 @@ def refresh_page(url, refresh_time):
 
         while not stop_event.is_set():
             time.sleep(refresh_time)
-            if stop_event.is_set():  # Vérifier encore pour éviter les actions après l'arrêt
+            if stop_event.is_set():
                 break
             try:
                 driver.refresh()
             except WebDriverException:
                 logging.error("Le navigateur a été fermé ou a perdu la connexion.")
-                break  # Sortir de la boucle si le navigateur ne peut être rafraîchi
+                break
     except WebDriverException as e:
         logging.error(f"Erreur initiale de WebDriver : {e}")
     finally:
