@@ -1,4 +1,4 @@
-from ..model.page_refresher import start_refreshing, stop_refreshing
+from ..model.page_refresher import start_refreshing, stop_refreshing_async
 from ..view.app_ui import create_gui
 
 
@@ -14,4 +14,4 @@ class RefresherController:
         start_refreshing(urls, refresh_time)
 
     def stop(self):
-        stop_refreshing()
+        stop_refreshing_async()

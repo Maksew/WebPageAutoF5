@@ -37,9 +37,11 @@ def start_refreshing(urls, refresh_time):
         thread.start()
 
 
-def stop_refreshing():
-    stop_event.set()
-    for driver in drivers:
-        driver.quit()
-    for thread in threads:
-        thread.join()
+def stop_refreshing_async():
+    def close_browsers():
+        stop_event.set()
+        time.sleep(1)
+        while drivers:
+            driver = drivers.pop()
+            driver.quit()
+    threading.Thread(target=close_browsers).start()

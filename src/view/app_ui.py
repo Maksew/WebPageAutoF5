@@ -1,5 +1,6 @@
 import tkinter as tk
 
+
 def create_gui(start_callback, stop_callback):
     root = tk.Tk()
     root.title("Web Page Auto Refresh")
