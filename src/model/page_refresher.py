@@ -27,16 +27,26 @@ def refresh_page(url, refresh_time):
 
         while not stop_event.is_set():
             time.sleep(refresh_time)
-            driver.refresh()
-    except (SessionNotCreatedException, WebDriverException) as e:
-        logging.error(f"Erreur : {e}")
+            if stop_event.is_set():  # Vérifier encore pour éviter les actions après l'arrêt
+                break
+            try:
+                driver.refresh()
+            except WebDriverException:
+                logging.error("Le navigateur a été fermé ou a perdu la connexion.")
+                break  # Sortir de la boucle si le navigateur ne peut être rafraîchi
+    except WebDriverException as e:
+        logging.error(f"Erreur initiale de WebDriver : {e}")
     finally:
         if driver:
-            driver.quit()
+            try:
+                driver.quit()
+            except WebDriverException:
+                logging.error("Erreur lors de la tentative de fermer le navigateur.")
 
 
 def start_refreshing(urls, refresh_time):
-    global threads
+    global threads, stop_event
+    stop_event.clear()
     threads = [threading.Thread(target=refresh_page, args=(url, refresh_time)) for url in urls]
     for thread in threads:
         thread.start()
