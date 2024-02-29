@@ -1,25 +1,22 @@
 import logging
-
-from ..model.page_refresher import start_refreshing, stop_refreshing_async
-from ..view.app_ui import create_gui
-
-
-def start(urls, refresh_time):
-    try:
-        refresh_time = float(refresh_time)
-        start_refreshing(urls, refresh_time)
-    except ValueError:
-        logging.error("Le temps de rafraîchissement doit être un nombre.")
-
-
-def stop():
-    stop_refreshing_async()
+from src.view.app_ui import create_gui
+from src.model.page_refresher import PageRefresher
 
 
 class RefresherController:
     def __init__(self):
-        self.view = create_gui(start, stop)
+        self.page_refresher = PageRefresher()
+        self.view = create_gui(self.start, self.stop)
 
     def run(self):
         self.view.mainloop()
 
+    def start(self, urls, refresh_time):
+        try:
+            refresh_time = float(refresh_time)
+            self.page_refresher.start_refreshing(urls, refresh_time)
+        except ValueError:
+            logging.error("Le temps de rafraîchissement doit être un nombre.")
+
+    def stop(self):
+        self.page_refresher.stop_refreshing_async()

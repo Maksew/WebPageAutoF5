@@ -9,52 +9,51 @@ import logging
 
 logging.basicConfig(level=logging.INFO)
 
-drivers = []
-threads = []
-stop_event = threading.Event()
 
+class PageRefresher:
+    def __init__(self):
+        self.drivers = []
+        self.threads = []
+        self.stop_event = threading.Event()
 
-def refresh_page(url, refresh_time):
-    driver = None
-    try:
-        edge_options = EdgeOptions()
-        edge_service = EdgeService(EdgeChromiumDriverManager().install())
-        driver = webdriver.Edge(service=edge_service, options=edge_options)
-        drivers.append(driver)
-        driver.get(url)
+    def refresh_page(self, url, refresh_time):
+        driver = None
+        try:
+            edge_options = EdgeOptions()
+            edge_service = EdgeService(EdgeChromiumDriverManager().install())
+            driver = webdriver.Edge(service=edge_service, options=edge_options)
+            self.drivers.append(driver)
+            driver.get(url)
 
-        while not stop_event.is_set():
-            time.sleep(refresh_time)
-            if stop_event.is_set():
-                break
-            try:
-                driver.refresh()
-            except WebDriverException:
-                logging.error("Le navigateur a été fermé ou a perdu la connexion.")
-                break
-    except WebDriverException as e:
-        logging.error(f"Erreur initiale de WebDriver : {e}")
-    finally:
-        if driver:
-            try:
+            while not self.stop_event.is_set():
+                time.sleep(refresh_time)
+                if self.stop_event.is_set():
+                    break
+                try:
+                    driver.refresh()
+                except WebDriverException:
+                    logging.error("Le navigateur a été fermé ou a perdu la connexion.")
+                    break
+        except WebDriverException as e:
+            logging.error(f"Erreur initiale de WebDriver : {e}")
+        finally:
+            if driver:
+                try:
+                    driver.quit()
+                except WebDriverException:
+                    logging.error("Erreur lors de la tentative de fermer le navigateur.")
+
+    def start_refreshing(self, urls, refresh_time):
+        self.stop_event.clear()
+        self.threads = [threading.Thread(target=self.refresh_page, args=(url, refresh_time)) for url in urls]
+        for thread in self.threads:
+            thread.start()
+
+    def stop_refreshing_async(self):
+        def close_browsers():
+            self.stop_event.set()
+            time.sleep(1)
+            while self.drivers:
+                driver = self.drivers.pop()
                 driver.quit()
-            except WebDriverException:
-                logging.error("Erreur lors de la tentative de fermer le navigateur.")
-
-
-def start_refreshing(urls, refresh_time):
-    global threads, stop_event
-    stop_event.clear()
-    threads = [threading.Thread(target=refresh_page, args=(url, refresh_time)) for url in urls]
-    for thread in threads:
-        thread.start()
-
-
-def stop_refreshing_async():
-    def close_browsers():
-        stop_event.set()
-        time.sleep(1)
-        while drivers:
-            driver = drivers.pop()
-            driver.quit()
-    threading.Thread(target=close_browsers).start()
+        threading.Thread(target=close_browsers).start()
