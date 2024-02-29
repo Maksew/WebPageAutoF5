@@ -1,5 +1,5 @@
 import tkinter as tk
-
+from tkinter import messagebox
 
 def create_gui(start_callback, stop_callback):
     root = tk.Tk()
@@ -26,11 +26,9 @@ def create_gui(start_callback, stop_callback):
         url_entry.pack(side=tk.LEFT, padx=(0, 10))
         url_entries.append(url_entry)
 
-        # Si le bouton '+' existe déjà, le retirer avant d'en créer un nouveau
-        if add_button is not None:  # Ajouter une vérification ici pour s'assurer que add_button n'est pas None
+        if add_button is not None:
             add_button.pack_forget()
 
-        # Créer un nouveau bouton '+' et le placer à côté du champ d'entrée
         add_button = tk.Button(url_entry_frame, text="+", font=("Helvetica", 12), command=add_url_entry)
         add_button.pack(side=tk.RIGHT)
 
@@ -38,17 +36,31 @@ def create_gui(start_callback, stop_callback):
     refresh_time_entry = tk.Entry(main_frame, width=20, font=("Helvetica", 12))
     refresh_time_entry.pack()
 
+    def start_refreshing():
+        urls = [entry.get() for entry in url_entries if entry.get().strip()]
+        refresh_time_str = refresh_time_entry.get().strip()
+
+        if not urls:
+            messagebox.showwarning("Warning", "Please enter at least one URL.")
+            return
+
+        try:
+            refresh_time = float(refresh_time_str)
+            if refresh_time <= 0:
+                raise ValueError("The refresh time must be a positive number.")
+        except ValueError:
+            messagebox.showwarning("Warning", "Please enter a valid refresh time in seconds.")
+            return
+
+        start_callback(urls, refresh_time)
+
     start_button = tk.Button(main_frame, text="Start Refreshing", font=("Helvetica", 12),
-                             command=lambda: start_callback(
-                                 [entry.get() for entry in url_entries if entry.get()],
-                                 refresh_time_entry.get()
-                             ))
+                             command=start_refreshing)
     start_button.pack(fill=tk.X, pady=5)
 
     stop_button = tk.Button(main_frame, text="Stop Refreshing", font=("Helvetica", 12), command=stop_callback)
     stop_button.pack(fill=tk.X)
 
-    # Ajouter le premier champ d'entrée d'URL
     add_url_entry()
 
     return root

@@ -5,6 +5,11 @@ from selenium.webdriver.edge.service import Service as EdgeService
 from webdriver_manager.microsoft import EdgeChromiumDriverManager
 from selenium.webdriver.edge.options import Options as EdgeOptions
 from selenium.common.exceptions import SessionNotCreatedException
+from selenium.common.exceptions import WebDriverException
+import logging
+
+# Configuration de base du logging
+logging.basicConfig(level=logging.INFO)
 
 drivers = []
 threads = []
@@ -23,8 +28,8 @@ def refresh_page(url, refresh_time):
         while not stop_event.is_set():
             time.sleep(refresh_time)
             driver.refresh()
-    except SessionNotCreatedException as e:
-        print("Erreur de session : ", e)
+    except (SessionNotCreatedException, WebDriverException) as e:
+        logging.error(f"Erreur : {e}")
     finally:
         if driver:
             driver.quit()
