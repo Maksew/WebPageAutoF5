@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import messagebox
 
+
 def create_gui(start_callback, stop_callback):
     root = tk.Tk()
     root.title("Rafraîchissement Automatique de Page Web")
