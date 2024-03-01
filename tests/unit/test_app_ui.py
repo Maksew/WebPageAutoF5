@@ -11,14 +11,12 @@ class TestAppUi(unittest.TestCase):
         self.mock_start = Mock()
         self.mock_stop = Mock()
         self.root = create_gui(self.mock_start, self.mock_stop)
-        self.root.update()  # Force la mise à jour de l'interface pour refléter les changements
+        self.root.update()
 
     def test_initial_state(self):
         """Teste l'état initial du bouton de démarrage."""
-        # Trouve tous les widgets Button dans main_frame
         buttons = [widget for widget in self.root.winfo_children()[0].winfo_children() if isinstance(widget, tk.Button)]
 
-        # Vérifie l'état du bouton de démarrage par son texte
         start_button_texts = [button.cget('text') for button in buttons]
         self.assertIn("Commencer le Rafraîchissement", start_button_texts)
 

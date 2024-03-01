@@ -12,7 +12,7 @@ class TestPageRefresher(unittest.TestCase):
     @patch('src.model.page_refresher.threading.Thread')
     def test_start_refreshing(self, mock_thread):
         """Teste si le rafraîchissement commence correctement."""
-        urls = ['https://github.com']
+        urls = ['https://example.com']
         refresh_time = 5
         self.page_refresher.start_refreshing(urls, refresh_time)
         self.assertEqual(mock_thread.call_count, len(urls))
