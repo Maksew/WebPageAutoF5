@@ -2,6 +2,7 @@
 
 import logging
 from src.controller.refresher_controller import RefresherController
+from src.logging_config import setup_logging
 
 
 def main():
@@ -17,6 +18,7 @@ def main():
 
 if __name__ == '__main__':
     try:
+        setup_logging()
         main()
     except Exception as e:
         logging.error("Une erreur inattendue est survenue : %s", e)
