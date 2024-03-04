@@ -8,6 +8,9 @@ fournissant les méthodes pour démarrer et arrêter le rafraîchissement des pa
 """
 
 import logging
+from tkinter import messagebox
+import re
+
 from src.view.app_ui import create_gui
 from src.model.page_refresher import PageRefresher
 
@@ -29,16 +32,38 @@ class RefresherController:
     def start(self, urls, refresh_time):
         """
         Démarre le processus de rafraîchissement des pages.
-
-        Args:
-            urls: Une liste d'URL à rafraîchir.
-            refresh_time: L'intervalle de temps pour le rafraîchissement des pages.
         """
+        valid_urls = [url for url in urls if self.validate_url(url)]
+        if len(valid_urls) != len(urls):
+            invalid_urls = set(urls) - set(valid_urls)
+            messagebox.showerror(
+                "URL Invalide",
+                "Les URLs suivantes ne sont pas valides:\n" + "\n".join(invalid_urls)
+            )
+            return
+
         try:
             refresh_time = float(refresh_time)
-            self.page_refresher.start_refreshing(urls, refresh_time)
-        except ValueError:
-            logging.error("Le temps de rafraîchissement doit être un nombre.")
+            if refresh_time <= 0:
+                raise ValueError("Le temps de rafraîchissement doit être un nombre positif.")
+            self.page_refresher.start_refreshing(valid_urls, refresh_time)
+        except ValueError as e:
+            messagebox.showerror(
+                "Erreur de Temps de Rafraîchissement",
+                str(e)
+            )
+            logging.error("Erreur de saisie: %s", e)
+
+    @staticmethod
+    def validate_url(url):
+        regex = re.compile(
+            r'^(https?://)?'  # http:// or https://
+            r'((([A-Z0-9][A-Z0-9-]*\.)+[A-Z]{2,6})|'  # domain...
+            r'localhost|'  # localhost...
+            r'\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})'  # ...or ip
+            r'(:\d+)?(/.*)?$',  # optional port and path
+            re.IGNORECASE)
+        return re.match(regex, url) is not None
 
     def stop(self):
         """Arrête le processus de rafraîchissement des pages."""
