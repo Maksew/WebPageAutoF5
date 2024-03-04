@@ -1,49 +1,34 @@
-# Web Page Auto-Refresh Script
+# Application de Rafraîchissement Automatique de Pages Web
 
-This is a Python script designed to automate the process of refreshing multiple web pages simultaneously using Selenium WebDriver and Python threading. It employs the Microsoft Edge browser.
+Cette application facilite le rafraîchissement automatique de pages web à des intervalles réguliers grâce à une interface graphique simple d'utilisation.
 
-## Requirements
+## Comment Démarrer
 
-- Python 3.6 or above
-- Selenium WebDriver
-- Microsoft Edge WebDriver
+Double-cliquez sur le fichier `.exe` de l'application pour la lancer. L'interface graphique s'affichera à l'écran.
 
-## Installation
+## Guide d'Utilisation
 
-1. **Python**: If not installed, download from [here](https://www.python.org/downloads/)
+### Ajouter des URLs
 
-2. **Selenium**: Use pip to install Selenium as follows:
+1. Dans le champ **Entrez les URLs** :
+   - Saisissez l'URL complète d'une page web que vous souhaitez rafraîchir.
+   - Pour ajouter plusieurs pages, cliquez sur le bouton **+** et ajoutez une URL par ligne.
 
-```shell
-pip install selenium
-```
-3. **Microsoft Edge WebDriver**: Download the correct version of Edge WebDriver based on your Microsoft Edge version from [here](https://developer.microsoft.com/en-us/microsoft-edge/tools/webdriver/). After download and extraction, replace `'chemin_vers_le_pilote/msedgedriver.exe'` in the script with your webdriver path.
-   
-## Usage
+### Définir le Temps de Rafraîchissement
 
-1. Open the Python script in your Python editor.
-2. Update the `config.json` file with the URLs you wish to auto-refresh and the refresh time:
+1. Dans le champ **Entrez le temps de rafraîchissement (secondes)** :
+   - Indiquez le nombre de secondes pour l'intervalle de rafraîchissement des pages.
 
-```json
-{
-    "urls": [
-        "URL_1",
-        "URL_2"
-        // Add more URLs here
-    ],
-    "edge_driver_path": "Your_Edge_Driver_Path",
-    "refresh_time": 30
-}
-```
+### Commencer et Arrêter le Rafraîchissement
 
-3. Execute the script. Each URL will open in a new Microsoft Edge window and refresh based on the configured interval.
+- Cliquez sur **Commencer le Rafraîchissement** pour démarrer le processus avec les paramètres que vous avez définis.
+- Pour arrêter le processus, cliquez sur **Arrêter le Rafraîchissement**.
 
-## Customization
+## Conseils
 
-To adjust the refresh interval, modify the `refresh_time` value in the `config.json` file. This value is in seconds.
+- Assurez-vous que les URLs saisies sont valides pour éviter les erreurs de rafraîchissement.
+- Les URLs doivent commencer par `http://` ou `https://`.
 
-## Limitations
+## Support
 
-This script is specific to Microsoft Edge. For other browsers, you will need a different WebDriver and may need to adjust the script.
-
-Remember to replace the placeholders such as `URL_1`, `URL_2`, and `Your_Edge_Driver_Path` with the actual values.
+En cas de difficultés ou pour toute question, n'hésitez pas à contacter le support technique.
