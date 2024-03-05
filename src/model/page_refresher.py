@@ -12,6 +12,7 @@ import time
 
 from selenium import webdriver
 from selenium.common.exceptions import WebDriverException
+from selenium.webdriver.edge.service import Service
 from selenium.webdriver.edge.options import Options as EdgeOptions
 from selenium.webdriver.edge.service import Service as EdgeService
 from webdriver_manager.microsoft import EdgeChromiumDriverManager
@@ -37,6 +38,8 @@ class PageRefresher:
         """
         driver = None
         try:
+            service = Service(EdgeChromiumDriverManager().install())
+            service.creationflags = 0x08000000
             edge_options = EdgeOptions()
             edge_options.add_argument("--disable-dev-shm-usage")
             edge_options.add_argument("--no-sandbox")
