@@ -38,6 +38,9 @@ class PageRefresher:
         driver = None
         try:
             edge_options = EdgeOptions()
+            edge_options.add_argument("--disable-dev-shm-usage")
+            edge_options.add_argument("--no-sandbox")
+            edge_options.add_experimental_option('excludeSwitches', ['enable-logging'])
             edge_service = EdgeService(EdgeChromiumDriverManager().install())
             driver = webdriver.Edge(service=edge_service, options=edge_options)
             self.drivers.append(driver)
