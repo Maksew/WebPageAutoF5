@@ -1,6 +1,6 @@
 import unittest
 from unittest.mock import patch, MagicMock
-from src.model.page_refresher import PageRefresher
+from model.page_refresher import PageRefresher
 
 
 class TestPageRefresher(unittest.TestCase):

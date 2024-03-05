@@ -12,6 +12,8 @@ le temps de rafraîchissement spécifiés par l'utilisateur.
 import tkinter as tk
 from tkinter import messagebox
 
+is_process_running = False
+
 
 def create_gui(start_callback, stop_callback):
     """
@@ -61,6 +63,7 @@ def create_gui(start_callback, stop_callback):
 
     # Fonction appelée lorsque le bouton de démarrage est pressé.
     def start_refreshing():
+        global is_process_running
         urls = [entry.get() for entry in url_entries if entry.get().strip()]
         refresh_time_str = refresh_time_entry.get().strip()
 
@@ -78,6 +81,17 @@ def create_gui(start_callback, stop_callback):
             return
 
         start_callback(urls, refresh_time)
+        is_process_running = True
+
+    def on_close():
+        if is_process_running and messagebox.askokcancel("Quitter",
+                                                         "Êtes-vous sûr de vouloir fermer l'application ?"):
+            stop_callback()
+            root.destroy()
+        elif not is_process_running:
+            root.destroy()
+
+    root.protocol("WM_DELETE_WINDOW", on_close)
 
     # Boutons pour démarrer et arrêter le rafraîchissement.
     start_button = tk.Button(main_frame, text="Commencer le Rafraîchissement"

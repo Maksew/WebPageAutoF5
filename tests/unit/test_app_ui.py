@@ -1,7 +1,7 @@
 import unittest
 import tkinter as tk
 from unittest.mock import Mock
-from src.view.app_ui import create_gui
+from view.app_ui import create_gui
 
 
 class TestAppUi(unittest.TestCase):
