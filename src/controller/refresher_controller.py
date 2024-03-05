@@ -11,8 +11,8 @@ import logging
 from tkinter import messagebox
 import re
 
-from src.view.app_ui import create_gui
-from src.model.page_refresher import PageRefresher
+from view.app_ui import create_gui
+from model.page_refresher import PageRefresher
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 

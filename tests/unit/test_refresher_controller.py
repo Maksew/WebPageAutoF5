@@ -1,6 +1,6 @@
 import unittest
 from unittest.mock import Mock, patch
-from src.controller.refresher_controller import RefresherController
+from controller.refresher_controller import RefresherController
 
 
 class TestRefresherController(unittest.TestCase):
